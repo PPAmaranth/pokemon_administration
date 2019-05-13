@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-tabs v-model="activePage" type="card" closable @tab-remove="removeTab" @tab-click="tabclick">
+    <el-tabs v-model="activePage" type="border-card" closable @tab-remove="removeTab" @tab-click="tabclick">
         <el-tab-pane
             v-for="(item, index) in contentTabs"
             :key="item.index"

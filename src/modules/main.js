@@ -32,9 +32,9 @@ export const main_module = {
                         index:"1-2",
                         children:[
                             {
-                            index:"1-2-1",
-                            title:'新增精灵',
-                            page:'pokemon_detail'
+                                index:"1-2-1",
+                                title:'新增精灵',
+                                page:'pokemon_detail'
                             }
                         ]
                     }
@@ -57,6 +57,7 @@ export const main_module = {
       },
     },
     mutations: {
+        //导航点击打开页面
         navOpen (state, item) {
             let exist = false;
             for(let i in state["contentTabs"]){
@@ -71,21 +72,23 @@ export const main_module = {
                 state["activePage"] = item["index"]
             }
         },
+        //改变当前激活页
         activePageChange(state, component){
             state["activePage"] = component.name
         },
+        //移除页
         removeTab(state, targetName){
             if (state["activePage"] === targetName) {
                 state["contentTabs"].forEach((tab, index) => {
-                if (tab.index === targetName) {
-                let nextTab = state["contentTabs"][index + 1] || state["contentTabs"][index - 1];
-                if (nextTab) {
-                    state["activePage"] = nextTab.index;
-                }else{
-                    state["activePage"] = null;
-                }
-                }
-            });
+                    if (tab.index === targetName) {
+                        let nextTab = state["contentTabs"][index + 1] || state["contentTabs"][index - 1];
+                        if (nextTab) {
+                            state["activePage"] = nextTab.index;
+                        }else{
+                            state["activePage"] = null;
+                        }
+                    }
+                });
             }
             state["activePage"] = state["activePage"];
             state["contentTabs"] = state["contentTabs"].filter(tab => tab.index !== targetName);
