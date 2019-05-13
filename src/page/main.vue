@@ -6,14 +6,17 @@
         <el-aside width="200px">
             <navpage></navpage>
         </el-aside>
-        <el-main>Main</el-main>
+        <el-main>
+          <maincontent></maincontent>
+        </el-main>
     </el-container>
     </el-container>
   </div>
 </template>
 
 <script>
-import navpage from '@/page/nav'
+import navpage from '@/components/nav'
+import maincontent from '@/components/content'
 
 export default {
   name: 'mainpage',
@@ -23,7 +26,7 @@ export default {
     }
   },
   components:{
-      navpage
+      navpage,maincontent
   }
 }
 </script>
@@ -41,11 +44,6 @@ export default {
   
   .el-aside {
     background-color: #D3DCE6;
-    color: #333;
-  }
-  
-  .el-main {
-    background-color: #E9EEF3;
     color: #333;
   }
   
