@@ -16,6 +16,8 @@
 <script>
 import pokemon_list from '@/page/pokemon/list'
 import pokemon_detail from '@/page/pokemon/detail'
+import skill_list from '@/page/skill/list'
+import skill_detail from '@/page/skill/detail'
 export default {
   name: 'maincontent',
   data () {
@@ -37,7 +39,7 @@ export default {
     }
   },
   components:{
-      pokemon_list,pokemon_detail
+      pokemon_list,pokemon_detail,skill_list,skill_detail
   },
   methods:{
       removeTab(targetName) {

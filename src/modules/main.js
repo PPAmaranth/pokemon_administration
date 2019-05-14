@@ -1,4 +1,5 @@
 import { pokemon } from '@/modules/pokemon/pokemon.js'
+import { skill } from '@/modules/skill/skill.js'
 
 export const main_module = {
     namespaced: true,
@@ -39,11 +40,39 @@ export const main_module = {
                         ]
                     }
                 ]
+            },{
+                title:'技能模块',
+                index:"2",
+                children:[
+                    {
+                        title:'查询',
+                        index:"2-1",
+                        children:[
+                            {
+                                index:"2-1-1",
+                                title:'查看技能列表',
+                                page:'skill_list'
+                            }
+                        ]
+                    },
+                    {
+                        title:'编辑',
+                        index:"2-2",
+                        children:[
+                            {
+                                index:"2-2-1",
+                                title:'技能编辑',
+                                page:'skill_detail'
+                            }
+                        ]
+                    }
+                ]
             }
       ]
     },
     modules: {
         pokemon:pokemon,
+        skill:skill
       },
     getters: {
       getMainState: (state, getters) => {
