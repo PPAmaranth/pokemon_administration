@@ -124,4 +124,7 @@ export default {
   .el-row{
     margin-top:20px;
   }
+  /deep/ .el-input__inner{
+      border-radius: 0px;
+  }
 </style>
