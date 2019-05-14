@@ -1,5 +1,5 @@
 import { pokemon_list } from '@/modules/pokemon/list.js'
-
+import { pokemon_detail } from '@/modules/pokemon/detail.js'
 export const pokemon = {
     namespaced: true,
     state: {
@@ -7,6 +7,7 @@ export const pokemon = {
     },
     modules: {
         pokemon_list:pokemon_list,
+        pokemon_detail:pokemon_detail,
       },
     getters: {
       

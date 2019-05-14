@@ -39,11 +39,11 @@ export default {
   },
   computed:{
     navList:function () {
-      return this.$store.getters["main/getNavList"]
+      return this.$store.getters["main/getMainState"]['navList']
     },
     activePage:{
       get:function(){
-          return this.$store.getters["main/getActivePage"]
+          return this.$store.getters["main/getMainState"]['activePage']
       },
       set:function(val){
           return val

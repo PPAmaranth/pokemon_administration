@@ -26,14 +26,14 @@ export default {
   computed:{
     activePage:{
         get:function(){
-            return this.$store.getters["main/getActivePage"]
+            return this.$store.getters["main/getMainState"]['activePage']
         },
         set:function(val){
             return val
         }
     },
     contentTabs:function(){
-        return this.$store.getters["main/getContentTabs"]
+        return this.$store.getters["main/getMainState"]['contentTabs']
     }
   },
   components:{

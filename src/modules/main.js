@@ -28,12 +28,12 @@ export const main_module = {
                         ]
                     },
                     {
-                        title:'新增',
+                        title:'编辑',
                         index:"1-2",
                         children:[
                             {
                                 index:"1-2-1",
-                                title:'新增精灵',
+                                title:'精灵编辑',
                                 page:'pokemon_detail'
                             }
                         ]
@@ -46,14 +46,8 @@ export const main_module = {
         pokemon:pokemon,
       },
     getters: {
-      getNavList: (state, getters) => {
-        return state.navList
-      },
-      getActivePage: (state, getters) => {
-        return state.activePage
-      },
-      getContentTabs: (state, getters) => {
-        return state.contentTabs
+      getMainState: (state, getters) => {
+        return state
       },
     },
     mutations: {
