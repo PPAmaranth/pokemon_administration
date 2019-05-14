@@ -11,7 +11,7 @@
         label="id">
       </el-table-column>
       <el-table-column
-        prop="name"
+        prop="cnName"
         label="名称">
       </el-table-column>
       <el-table-column
