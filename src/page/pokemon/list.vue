@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-table
-      :data="tableData"
+      :data="pokemonListState.tableData"
       height="500"
       border
       size="mini"
@@ -14,6 +14,14 @@
         prop="name"
         label="名称">
       </el-table-column>
+      <el-table-column
+        fixed="right"
+        label="操作"
+        width="100">
+        <template slot-scope="scope">
+          <el-button @click="handleClick(scope.row)" type="text" size="mini">编辑</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <el-row style="padding-top:15px;">
       <el-col :span="10">
@@ -21,18 +29,18 @@
           size="mini"
           background
           layout="prev, pager, next"
-          :total="total"
-          :page-size="pageSize"
-          :current-page="currentPage"
+          :total="pokemonListState.total"
+          :page-size="pokemonListState.pageSize"
+          :current-page="pokemonListState.currentPage"
           @current-change="currentChange">
         </el-pagination>
       </el-col>
       <el-col :span="12">
         跳转到第
         <el-input-number size="mini"
-         v-model="currentPage"
+         v-model="pokemonListState.currentPage"
          :min="0"
-         :max="pages"
+         :max="pokemonListState.pages"
          :controls="false"
          @change="inputPageChange">
         </el-input-number>
@@ -52,46 +60,14 @@
       }
     },
     computed:{
-      tableData:{
+      pokemonListState:{
           get:function(){
-              return this.$store.getters["main/pokemon/pokemon_list/getPokemonListState"]['tableData']
+              return this.$store.getters["main/pokemon/pokemon_list/getPokemonListState"]
           },
           set:function(val){
               return val
           }
-      },
-      pageSize:{
-        get:function(){
-              return this.$store.getters["main/pokemon/pokemon_list/getPokemonListState"]['pageSize']
-          },
-          set:function(val){
-              return val
-          }
-      },
-      total:{
-        get:function(){
-              return this.$store.getters["main/pokemon/pokemon_list/getPokemonListState"]['total']
-          },
-          set:function(val){
-              return val
-          }
-      },
-      currentPage:{
-        get:function(){
-              return this.$store.getters["main/pokemon/pokemon_list/getPokemonListState"]['pageNum']
-          },
-          set:function(val){
-              return val
-          }
-      },
-      pages:{
-        get:function(){
-              return this.$store.getters["main/pokemon/pokemon_list/getPokemonListState"]['pages']
-          },
-          set:function(val){
-              return val
-          }
-      },
+      }
     },
     methods:{
       //当前页改变
@@ -115,6 +91,19 @@
       inputPageChange(val){
         this.inputPage = val
       },
+      handleClick(row){
+        this.$store.dispatch({
+          type: 'main/pokemon/pokemon_detail/getPokemonDetail',
+          id:row.id
+        }).then(()=>{
+          const detailItem = {
+              index:"1-2-1",
+              title:'精灵编辑',
+              page:'pokemon_detail'
+          }
+          this.$store.commit('main/navOpen',detailItem)
+        })
+      }
     },
     mounted(){
       this.$store.dispatch({

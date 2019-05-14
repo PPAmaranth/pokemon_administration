@@ -51,5 +51,7 @@ export default {
 </script>
 
 <style scoped>
-
+  .el-tabs{
+    min-height:650px;
+  }
 </style>

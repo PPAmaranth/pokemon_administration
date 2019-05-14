@@ -1,10 +1,10 @@
 <template>
   <div>
       <el-menu
-      :default-active="activePage"
+      :default-active="mainState.activePage"
       class="el-menu-vertical-demo">
       <el-submenu 
-        v-for="parent in navList" 
+        v-for="parent in mainState.navList" 
         :index="parent.index"
         :key="parent.index">
             <template slot="title">
@@ -38,16 +38,8 @@ export default {
     }
   },
   computed:{
-    navList:function () {
-      return this.$store.getters["main/getMainState"]['navList']
-    },
-    activePage:{
-      get:function(){
-          return this.$store.getters["main/getMainState"]['activePage']
-      },
-      set:function(val){
-          return val
-      }
+    mainState:function () {
+      return this.$store.getters["main/getMainState"]
     },
   },
   mounted(){
