@@ -118,6 +118,17 @@ export const main_module = {
         }
     },
     actions: {
-
+        //移除页面前执行
+        async removePage(_,payload){
+            const closeFunction = {
+                '2-2-1':'skill/skill_detail/closePage'
+            }
+            if(closeFunction[payload.targetName]){
+                await _.dispatch({
+                    type:closeFunction[payload.targetName]
+                })
+            }
+            await _.commit('removeTab',payload.targetName)
+        }
     },
   }

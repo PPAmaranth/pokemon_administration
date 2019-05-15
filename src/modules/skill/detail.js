@@ -3,7 +3,29 @@ import request from '@/util/request.js';
 export const skill_detail = {
     namespaced: true,
     state: {
+        mode:null,//add edit 新增或编辑
+        id:null,
         currentState:{},
+        rules:{
+            cnName:[
+                { required: true, message: '请输入中文名cnName', trigger: 'change' },
+            ],
+            propertyName:[
+                { required: true, message: '请选择属性propertyName', trigger: 'change' },
+            ],
+            classificationName:[
+                { required: true, message: '请选择类型classificationName', trigger: 'change' },
+            ],
+            power:[
+                { required: true, message: '请输入威力power', trigger: 'change' },
+            ],
+            hitProbability:[
+                { required: true, message: '请输入命中hitProbability', trigger: 'change' },
+            ],
+            pp:[
+                { required: true, message: '请输入使用数值pp', trigger: 'change' },
+            ],
+        },
         properties:[],
         classification:[
             {
@@ -26,6 +48,12 @@ export const skill_detail = {
         },
     },
     mutations: {
+        //写入状态和id
+        setInitMsg(state, props){
+            state.id = props.id
+            state.mode = props.mode
+        },
+        //更新当前详情状态
         updateCurrentState(state, result){
             let _obj = {
                 ...result
@@ -37,6 +65,7 @@ export const skill_detail = {
             }
             state.currentState = _obj
         },
+        //设置属性下拉
         setProperties(state, result){
             let _arr = []
             for(let i in result){
@@ -66,13 +95,32 @@ export const skill_detail = {
         },
     },
     actions: {
+        //打开页面
+        async openPage(_,payload) {
+            //被打开时写入id与模式
+            await _.commit('setInitMsg',payload.props)
+            await _.dispatch({
+                type: 'getSkillDetail'
+            })
+        },
+        //关闭页面
+        async closePage(_,payload) {
+            //被打开时写入id与模式
+            const props = {
+                id:null,
+                mode:null
+            }
+            await _.commit('setInitMsg',props)
+        },
+        //获取详情信息
         async getSkillDetail(_,payload) {
             const endPointURI = 'http://localhost:8010/skill/detail';
             const method = 'POST';
-            const data = {id:payload.id}
+            const data = {id:_.state.id}
             const _Request = await request(endPointURI, method, data)
             _.commit('updateCurrentState',_Request.result)
         },
+        //获取属性列表
         async getProperties(_,payload) {
             const endPointURI = 'http://localhost:8010/property/list';
             const method = 'POST';
@@ -80,6 +128,7 @@ export const skill_detail = {
             const _Request = await request(endPointURI, method, data)
             _.commit('setProperties',_Request.result)
         },
+        //保存
         async save(_,payload) {
             const endPointURI = 'http://localhost:8010/skill/edit';
             const method = 'POST';
@@ -93,7 +142,7 @@ export const skill_detail = {
                 data.machineSkillCode = null
             }
             const _Request = await request(endPointURI, method, data)
-            console.log(_Request)
+            return _Request
         },
     },
   }

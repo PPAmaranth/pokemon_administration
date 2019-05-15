@@ -43,7 +43,11 @@ export default {
   },
   methods:{
       removeTab(targetName) {
-        this.$store.commit('main/removeTab', targetName)
+        // this.$store.commit('main/removeTab', targetName)
+        this.$store.dispatch({
+            type: 'main/removePage',
+            targetName:targetName
+        })
       },
       tabclick(component){
           this.$store.commit('main/activePageChange', component)

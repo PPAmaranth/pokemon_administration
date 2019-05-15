@@ -24,7 +24,7 @@
       </el-table-column>
     </el-table>
     <el-row style="padding-top:15px;">
-      <el-col :span="10">
+      <el-col :span="14">
         <el-pagination
           size="mini"
           background
@@ -35,7 +35,7 @@
           @current-change="currentChange">
         </el-pagination>
       </el-col>
-      <el-col :span="12">
+      <el-col :span="10">
         跳转到第
         <el-input-number size="mini"
          v-model="pokemonListState.currentPage"
