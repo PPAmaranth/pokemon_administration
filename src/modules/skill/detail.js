@@ -130,7 +130,13 @@ export const skill_detail = {
         },
         //保存
         async save(_,payload) {
-            const endPointURI = 'http://localhost:8010/skill/edit';
+            let endPointURI;
+            if(_.state.mode == 'edit'){
+                endPointURI  = 'http://localhost:8010/skill/edit';
+            }
+            if(_.state.mode == 'add'){
+                endPointURI = 'http://localhost:8010/skill/add';
+            }
             const method = 'POST';
             let data = {
                 ..._.state.currentState
