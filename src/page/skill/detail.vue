@@ -1,6 +1,9 @@
 <template>
   <div>
-      <el-form :model="skillDetailState.currentState" :rules="skillDetailState.rules">
+      <el-form 
+        :model="skillDetailState.currentState" 
+        :rules="skillDetailState.rules"
+        ref="ruleForm">
         <el-row :gutter="24" justify="space-between" style="margin:0;">
             <el-col :span="10">
                 &nbsp;
@@ -13,10 +16,10 @@
                 &nbsp;
             </el-col>
             <el-col :span="2">
-                <el-button size="mini" type="primary"><i class="el-icon-edit el-icon--left" @click="save">保存</i></el-button>
+                <el-button size="mini" type="primary" plain><i class="el-icon-edit el-icon--left" @click="submit">保存</i></el-button>
             </el-col>
             <el-col :span="2">
-                &nbsp;
+                <el-button size="mini" :disabled="skillDetailState.mode !='edit'" type="info" plain><i class="el-icon-delete el-icon--left" @click="doDelete">删除</i></el-button>
             </el-col>
         </el-row>
         <el-divider><i class="el-icon-s-operation"></i></el-divider>
@@ -109,9 +112,11 @@
         </el-row>
         <el-row :gutter="24" justify="space-between">
             <el-col :span="24">
-                <el-input v-model="skillDetailState.currentState.description">
-                    <template slot="prepend">技能描述</template>
-                </el-input>
+                <el-form-item prop="description">
+                    <el-input v-model="skillDetailState.currentState.description">
+                        <template slot="prepend">技能描述</template>
+                    </el-input>
+                </el-form-item>
             </el-col>
         </el-row>
     </el-form>
@@ -137,25 +142,78 @@ export default {
       }
     },
   methods:{
-      propertyNameChange(val){
-          this.$store.commit('main/skill/skill_detail/handlePropertyNameChange', val)
-      },
-      classificationNameChange(val){
-          this.$store.commit('main/skill/skill_detail/handleClassificationNameChange', val)
-      },
-      save(){
-          this.$store.dispatch({
-            type: 'main/skill/skill_detail/save',
-        }).then((result)=>{
-            this.$alert(result.msg, '请求信息', {
-                confirmButtonText: '确定',
-                callback: action => {
-                    this.$store.commit('main/removeTab', '2-2-1')
-                }
+    propertyNameChange(val){
+        this.$store.commit('main/skill/skill_detail/handlePropertyNameChange', val)
+    },
+    classificationNameChange(val){
+        this.$store.commit('main/skill/skill_detail/handleClassificationNameChange', val)
+    },
+    //删除
+    doDelete(){
+        if(this.skillDetailState.mode != 'edit'){
+            return
+        }
+        this.$confirm(`确认删除（${this.skillDetailState.currentState.cnName}）？`, '系统信息', {
+            confirmButtonText: '删除',
+            cancelButtonText: '取消',
+            showClose:false,
+            closeOnClickModal:false,
+            closeOnPressEscape:false
+        }).then(()=>{
+            this.$store.dispatch({
+                type: 'main/skill/skill_detail/save',
+            }).then((result)=>{
+                this.$alert(result.msg, '请求信息', {
+                    confirmButtonText: '确定'
+                });
+                this.$store.dispatch({
+                    type: 'main/removePage',
+                    targetName:'2-2-1'
+                })
+            })
+        }).catch(()=>{
+
+        })
+    },
+    //提交保存
+    submit(){
+        //验证
+        this.$refs.ruleForm.validate().then(()=>{
+            this.save()
+        }).catch(()=>{
+            this.$alert('校验失败，请填写必填信息', '系统信息', {
+                confirmButtonText: '确定'
             });
         })
-      }
-  },
+    },
+    save(){
+        this.$store.dispatch({
+            type: 'main/skill/skill_detail/save',
+        }).then((result)=>{
+            this.$confirm(result.msg, '请求信息', {
+                confirmButtonText: '确认并关闭',
+                cancelButtonText: '确认并查看',
+                showClose:false,
+                closeOnClickModal:false,
+                closeOnPressEscape:false
+            }).then(()=>{
+                this.$store.dispatch({
+                    type: 'main/removePage',
+                    targetName:'2-2-1'
+                })
+            }).catch(()=>{
+                const props = {
+                    id:result.result.id,
+                    mode:'edit'
+                }
+                this.$store.commit('main/skill/skill_detail/setInitMsg',props)
+                this.$store.dispatch({
+                    type: 'main/skill/skill_detail/getSkillDetail',
+                })
+            })
+        })
+    }
+},
     mounted(){
         if(!this.skillDetailState.id){
             const props = {

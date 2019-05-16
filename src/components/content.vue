@@ -46,7 +46,8 @@ export default {
         // this.$store.commit('main/removeTab', targetName)
         this.$store.dispatch({
             type: 'main/removePage',
-            targetName:targetName
+            targetName:targetName,
+            vueComponent:this
         })
       },
       tabclick(component){

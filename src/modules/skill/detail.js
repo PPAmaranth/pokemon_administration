@@ -6,6 +6,7 @@ export const skill_detail = {
         mode:null,//add edit 新增或编辑
         id:null,
         currentState:{},
+        initState:null,
         rules:{
             cnName:[
                 { required: true, message: '请输入中文名cnName', trigger: 'change' },
@@ -24,6 +25,9 @@ export const skill_detail = {
             ],
             pp:[
                 { required: true, message: '请输入使用数值pp', trigger: 'change' },
+            ],
+            description:[
+                { required: true, message: '请输入技能描述', trigger: 'change' },
             ],
         },
         properties:[],
@@ -64,6 +68,7 @@ export const skill_detail = {
                 _obj.isMachineSkill = false
             }
             state.currentState = _obj
+            state.initState = JSON.stringify(_obj)
         },
         //设置属性下拉
         setProperties(state, result){
@@ -105,12 +110,36 @@ export const skill_detail = {
         },
         //关闭页面
         async closePage(_,payload) {
-            //被打开时写入id与模式
-            const props = {
-                id:null,
-                mode:null
+            const currentStateStr = JSON.stringify(_.state.currentState)
+            //页面内容改变时关闭前提示是否关闭
+            if(currentStateStr !== _.state.initState){
+                await payload.payload.vueComponent.$confirm('页面已被操作，是否确定关闭？', '系统信息', {
+                    confirmButtonText: '关闭',
+                    cancelButtonText: '取消',
+                    closeOnClickModal:false,
+                    closeOnPressEscape:false
+                }).then(()=>{
+                    const props = {
+                        id:null,
+                        mode:null
+                    }
+                    _.commit('setInitMsg',props)
+                }).catch(()=>{
+                    
+                })
+            }else{
+                const props = {
+                    id:null,
+                    mode:null
+                }
+                _.commit('setInitMsg',props)
             }
-            await _.commit('setInitMsg',props)
+            //最后mode还存在就不关闭 否则就关闭
+            if(_.state.mode){
+                return false
+            }else{
+                return true
+            }
         },
         //获取详情信息
         async getSkillDetail(_,payload) {
@@ -146,6 +175,16 @@ export const skill_detail = {
             }else{
                 data.isMachineSkill = 0
                 data.machineSkillCode = null
+            }
+            const _Request = await request(endPointURI, method, data)
+            return _Request
+        },
+        //删除
+        async delete(_,payload) {
+            const endPointURI = 'http://localhost:8010/skill/edit';
+            const method = 'POST';
+            const data = {
+                id:_.state.currentState.id
             }
             const _Request = await request(endPointURI, method, data)
             return _Request

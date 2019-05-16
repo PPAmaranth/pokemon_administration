@@ -125,10 +125,17 @@ export const main_module = {
             }
             if(closeFunction[payload.targetName]){
                 await _.dispatch({
-                    type:closeFunction[payload.targetName]
+                    type:closeFunction[payload.targetName],
+                    payload:payload
+                }).then((bol)=>{
+                    if(bol){
+                        //从closePage里获取bol true关闭，false不关闭
+                        _.commit('removeTab',payload.targetName)
+                    }
                 })
+            }else{
+                _.commit('removeTab',payload.targetName)
             }
-            await _.commit('removeTab',payload.targetName)
         }
     },
   }
