@@ -161,7 +161,7 @@ export default {
             closeOnPressEscape:false
         }).then(()=>{
             this.$store.dispatch({
-                type: 'main/skill/skill_detail/save',
+                type: 'main/skill/skill_detail/delete',
             }).then((result)=>{
                 this.$alert(result.msg, '请求信息', {
                     confirmButtonText: '确定'

@@ -82,6 +82,11 @@ export const skill_detail = {
         },
         //属性下拉改变
         handlePropertyNameChange(state, val){
+            if(val == null){
+                state['propertyName'] = val
+                state['property'] = null
+                return
+            }
             for(let i in state['properties']){
                 if(state['properties'][i]['name'] == val){
                     state['currentState']['property'] = state['properties'][i]['id']
@@ -91,6 +96,11 @@ export const skill_detail = {
         },
         //类型下拉改变
         handleClassificationNameChange(state, val){
+            if(val == null){
+                state['classificationName'] = val
+                state['classification'] = null
+                return
+            }
             for(let i in state['classification']){
                 if(state['classification'][i]['name'] == val){
                     state['currentState']['classification'] = state['classification'][i]['id']
@@ -181,7 +191,7 @@ export const skill_detail = {
         },
         //删除
         async delete(_,payload) {
-            const endPointURI = 'http://localhost:8010/skill/edit';
+            const endPointURI = 'http://localhost:8010/skill/delete';
             const method = 'POST';
             const data = {
                 id:_.state.currentState.id

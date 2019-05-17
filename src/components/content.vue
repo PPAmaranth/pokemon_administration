@@ -60,5 +60,6 @@ export default {
 <style scoped>
   .el-tabs{
     min-height:650px;
+    min-width:950px;
   }
 </style>

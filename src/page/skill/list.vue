@@ -1,5 +1,45 @@
 <template>
   <div>
+    <el-row :gutter="24" justify="space-between" style="margin:0;">
+        <el-col :span="6">
+            <div class="el-input-group">
+                <div class="el-input-group__prepend" style="font-size:14px;">类型</div>
+                <el-select v-model="skillListState.classificationName" @change="classificationNameChange" size="mini" clearable>
+                    <el-option
+                    v-for="item in skillListState.classificationOptions"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.name">
+                    </el-option>
+                </el-select>
+            </div>
+        </el-col>
+        <el-col :span="6">
+            <div class="el-input-group">
+                <div class="el-input-group__prepend" style="font-size:14px;">属性</div>
+                <el-select v-model="skillListState.propertyName" @change="propertyNameChange" size="mini" clearable>
+                    <el-option
+                    v-for="item in skillListState.propertiesOptions"
+                    :key="item.id"
+                    :label="item.name"
+                    :value="item.name">
+                    </el-option>
+                </el-select>
+            </div>
+        </el-col>
+        <el-col :span="2">
+            &nbsp;
+        </el-col>
+        <el-col :span="8">
+            <el-input v-model="skillListState.word" size="mini">
+                <template slot="prepend">名称关键字</template>
+            </el-input>
+        </el-col>
+        <el-col :span="2">
+            <el-button size="mini" type="primary" plain><i class="el-icon-refresh el-icon--left" @click="reflash">刷新</i></el-button>
+        </el-col>
+    </el-row>
+    <el-divider><i class="el-icon-s-operation"></i></el-divider>
     <el-table
       :data="skillListState.tableData"
       height="500"
@@ -15,7 +55,7 @@
         label="名称">
       </el-table-column>
       <el-table-column
-        prop="power"
+        prop="propertyName"
         label="属性">
       </el-table-column>
       <el-table-column
@@ -23,7 +63,7 @@
         label="类型">
       </el-table-column>
       <el-table-column
-        prop="propertyName"
+        prop="power"
         label="威力">
       </el-table-column>
       <el-table-column
@@ -95,9 +135,21 @@
           this.inputPage = newPage
         })
       },
+      //刷新
+      reflash(){
+        this.$store.dispatch({
+            type: 'main/skill/skill_list/getSkillList',
+            pageNum:this.skillListState.pageNum
+          }).then(()=>{
+            this.$message({
+              message: '刷新完毕',
+              type: 'success'
+            });
+          })
+      },
       //跳转页
       jumpPage(){
-        if(this.inputPage && this.inputPage != this.currentPage){
+        if(this.inputPage && this.inputPage != this.skillListState.pageNum){
             this.$store.dispatch({
             type: 'main/skill/skill_list/getSkillList',
             pageNum:this.inputPage
@@ -123,12 +175,22 @@
           }
           this.$store.commit('main/navOpen',detailItem)
         })
-      }
+      },
+      propertyNameChange(val){
+        this.$store.commit('main/skill/skill_list/handlePropertyNameChange', val)
+      },
+      classificationNameChange(val){
+          this.$store.commit('main/skill/skill_list/handleClassificationNameChange', val)
+      },
     },
     mounted(){
       this.$store.dispatch({
         type: 'main/skill/skill_list/getSkillList',
         pageNum:1
+      }).then(()=>{
+          this.$store.dispatch({
+            type: 'main/skill/skill_list/getProperties',
+        })
       })
     }
   }
