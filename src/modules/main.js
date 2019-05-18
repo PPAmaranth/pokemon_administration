@@ -120,6 +120,7 @@ export const main_module = {
     actions: {
         //移除页面前执行
         async removePage(_,payload){
+            let isClose = true
             const closeFunction = {
                 '2-2-1':'skill/skill_detail/closePage'
             }
@@ -131,11 +132,14 @@ export const main_module = {
                     if(bol){
                         //从closePage里获取bol true关闭，false不关闭
                         _.commit('removeTab',payload.targetName)
+                    }else{
+                        isClose = false
                     }
                 })
             }else{
                 _.commit('removeTab',payload.targetName)
             }
+            return isClose
         }
     },
   }

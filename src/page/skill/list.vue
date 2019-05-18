@@ -160,21 +160,52 @@
         this.inputPage = val
       },
       handleClick(row){
-        const props = {
-          id:row.id,
-          mode:'edit'
+        //先判断技能编辑页面是否存在
+        let pageExist = false
+        const detailItem = {
+            index:"2-2-1",
+            title:'技能编辑',
+            page:'skill_detail'
         }
-        this.$store.dispatch({
-          type: 'main/skill/skill_detail/openPage',
-          props:props
-        }).then(()=>{
-          const detailItem = {
-              index:"2-2-1",
-              title:'技能编辑',
-              page:'skill_detail'
+        //在页签栏里判断
+        const _contentTabs = this.$store.getters["main/getMainState"]['contentTabs']
+        for(let i in _contentTabs){
+          if(_contentTabs[i]['index'] == detailItem['index']){
+            pageExist = true
           }
+        }
+        if(pageExist){
+          //存在时 判断是否被编辑过
           this.$store.commit('main/navOpen',detailItem)
-        })
+          this.$store.dispatch({
+              type: 'main/removePage',
+              targetName:detailItem.index,
+              vueComponent:this
+          }).then((result)=>{
+            //返回的result为true时即页面关闭 此时从新打开获取编辑的信息 false时无事发生停留
+            if(result){
+              this.$store.commit('main/navOpen',detailItem)
+              const props = {
+                id:row.id,
+                mode:'edit'
+              }
+              this.$store.dispatch({
+                type: 'main/skill/skill_detail/openPage',
+                props:props
+              })
+            }
+          })
+        }else{
+          this.$store.commit('main/navOpen',detailItem)
+          const props = {
+            id:row.id,
+            mode:'edit'
+          }
+          this.$store.dispatch({
+            type: 'main/skill/skill_detail/openPage',
+            props:props
+          })
+        }
       },
       propertyNameChange(val){
         this.$store.commit('main/skill/skill_list/handlePropertyNameChange', val)
