@@ -30,8 +30,8 @@ export const skill_detail = {
                 { required: true, message: '请输入技能描述', trigger: 'change' },
             ],
         },
-        properties:[],
-        classification:[
+        propertiesOptions:[],
+        classificationOptions:[
             {
                id:1,
                name:"物理" 
@@ -78,18 +78,18 @@ export const skill_detail = {
                     _arr.push(result[i])
                 }
             }
-            state.properties = _arr
+            state.propertiesOptions = _arr
         },
         //属性下拉改变
         handlePropertyNameChange(state, val){
             if(val == null){
-                state['propertyName'] = val
-                state['property'] = null
+                state['currentState']['propertyName'] = val
+                state['currentState']['property'] = null
                 return
             }
-            for(let i in state['properties']){
-                if(state['properties'][i]['name'] == val){
-                    state['currentState']['property'] = state['properties'][i]['id']
+            for(let i in state['propertiesOptions']){
+                if(state['propertiesOptions'][i]['name'] == val){
+                    state['currentState']['property'] = state['propertiesOptions'][i]['id']
                     state['currentState']['propertyName'] = val
                 }
             }
@@ -97,13 +97,13 @@ export const skill_detail = {
         //类型下拉改变
         handleClassificationNameChange(state, val){
             if(val == null){
-                state['classificationName'] = val
-                state['classification'] = null
+                state['currentState']['classificationName'] = val
+                state['currentState']['classification'] = null
                 return
             }
-            for(let i in state['classification']){
-                if(state['classification'][i]['name'] == val){
-                    state['currentState']['classification'] = state['classification'][i]['id']
+            for(let i in state['classificationOptions']){
+                if(state['classificationOptions'][i]['name'] == val){
+                    state['currentState']['classification'] = state['classificationOptions'][i]['id']
                     state['currentState']['classificationName'] = val
                 }
             }

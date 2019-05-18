@@ -6,11 +6,11 @@ export const main_module = {
     state: {
         activePage:'1-1-1',
         contentTabs:[
-            {
-                index:"1-1-1",
-                title:'查看精灵列表',
-                page:'pokemon_list'
-            }
+            // {
+            //     index:"1-1-1",
+            //     title:'查看精灵列表',
+            //     page:'pokemon_list'
+            // }
         ],
         navList:[
             {

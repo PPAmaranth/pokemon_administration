@@ -54,7 +54,7 @@
                         <div class="el-input-group__prepend" style="font-size:14px;">属性</div>
                         <el-select v-model="skillDetailState.currentState.propertyName" @change="propertyNameChange">
                             <el-option
-                            v-for="item in skillDetailState.properties"
+                            v-for="item in skillDetailState.propertiesOptions"
                             :key="item.id"
                             :label="item.name"
                             :value="item.name">
@@ -69,7 +69,7 @@
                     <div class="el-input-group__prepend" style="font-size:14px;">类型</div>
                     <el-select v-model="skillDetailState.currentState.classificationName" @change="classificationNameChange">
                         <el-option
-                        v-for="item in skillDetailState.classification"
+                        v-for="item in skillDetailState.classificationOptions"
                         :key="item.id"
                         :label="item.name"
                         :value="item.name">
