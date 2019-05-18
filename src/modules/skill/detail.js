@@ -68,7 +68,10 @@ export const skill_detail = {
                 _obj.isMachineSkill = false
             }
             state.currentState = _obj
-            state.initState = JSON.stringify(_obj)
+        },
+        //保存初始currentState的字符串
+        setInitState(state, string){
+            state.initState = string
         },
         //设置属性下拉
         setProperties(state, result){

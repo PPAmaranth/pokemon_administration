@@ -80,34 +80,42 @@
             </el-col>
             <el-col :span="6">
                 <el-form-item prop="power">
-                    <el-input v-model="skillDetailState.currentState.power">
-                        <template slot="prepend">威力</template>
-                    </el-input>
+                    <div class="el-input-group">
+                        <div class="el-input-group__prepend" style="font-size:14px;">威力</div>
+                        <el-input-number :controls="false" style="width:100%;" v-model="skillDetailState.currentState.power">
+                        </el-input-number>
+                    </div>
                 </el-form-item>
                 </el-col>
             <el-col :span="6">
                 <el-form-item prop="hitProbability">
-                    <el-input v-model="skillDetailState.currentState.hitProbability">
-                        <template slot="prepend">命中</template>
-                    </el-input>
+                    <div class="el-input-group">
+                        <div class="el-input-group__prepend" style="font-size:14px;">命中</div>
+                        <el-input-number :controls="false" style="width:100%;" v-model="skillDetailState.currentState.hitProbability">
+                        </el-input-number>
+                    </div>
                 </el-form-item>
             </el-col>
         </el-row>
         <el-row :gutter="24" justify="space-between">
             <el-col :span="6">
                 <el-form-item prop="pp">
-                    <el-input v-model="skillDetailState.currentState.pp">
-                        <template slot="prepend">pp</template>
-                    </el-input>
+                    <div class="el-input-group">
+                        <div class="el-input-group__prepend" style="font-size:14px;">pp</div>
+                        <el-input-number :controls="false" style="width:100%;" v-model="skillDetailState.currentState.pp">
+                        </el-input-number>
+                    </div>
                 </el-form-item>
             </el-col>
             <el-col :span="6">
                 <el-checkbox v-model="skillDetailState.currentState.isMachineSkill">是否技能机</el-checkbox>
             </el-col>
             <el-col :span="6">
-                <el-input v-model="skillDetailState.currentState.machineSkillCode" :disabled="!skillDetailState.currentState.isMachineSkill">
-                    <template slot="prepend">技能机编号</template>
-                </el-input>
+                <div class="el-input-group">
+                    <div class="el-input-group__prepend" style="font-size:14px;">技能机编号</div>
+                    <el-input-number :controls="false" style="width:100%;" v-model="skillDetailState.currentState.machineSkillCode" :disabled="!skillDetailState.currentState.isMachineSkill">
+                    </el-input-number>
+                </div>
             </el-col>
         </el-row>
         <el-row :gutter="24" justify="space-between">
@@ -227,6 +235,10 @@ export default {
         }).then(()=>{
           this.$store.dispatch({
             type: 'main/skill/skill_detail/getProperties',
+        }).then(()=>{
+            //最后保存初始currentState的json字符串
+            const _initState = JSON.stringify(this.skillDetailState.currentState)
+            this.$store.commit('main/skill/skill_detail/setInitState',_initState)
         })
       })
     }
